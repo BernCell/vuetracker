@@ -7,6 +7,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@element-plus/icons": "0.0.11",
     "element-plus": "^1.1.0-beta.7",
     "vue": "^3.2.6"
@@ -16,5 +17,15 @@
     "@vue/compiler-sfc": "^3.2.6",
     "sass": "^1.38.1",
     "vite": "^2.5.1"
+=======
+    "element-plus": "^1.0.2-beta.33",
+    "vue": "^3.0.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^1.1.5",
+    "@vue/compiler-sfc": "^3.0.5",
+    "sass": "^1.32.8",
+    "vite": "^2.0.5"
+>>>>>>> a9d26aa0242399ce81f396fb9c147be2468cd14d
   }
 }
