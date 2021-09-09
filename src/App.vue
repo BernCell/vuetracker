@@ -1,51 +1,5 @@
 <template>
-<<<<<<< HEAD
-<el-container>
 
-  <el-aside width="200px">
-    <TheMenu/>
-  </el-aside>
-
-  <el-container>
-    <el-header height="60px" >
-      
-      <TheTopTask />
-       
-    </el-header>
-
-    <el-main>
-      <el-table :data="tableData">
-        <el-table-column prop="date" label="Date" width="140">
-        </el-table-column>
-        <el-table-column prop="name" label="Name" width="120">
-        </el-table-column>
-        <el-table-column prop="address" label="Address">
-        </el-table-column>
-      </el-table>
-    </el-main>
-  </el-container>
-</el-container>
-</template>
-
-
-
-
-<script>
-import TheMenu from "./components/TheMenu.vue"
-import TheTopTask from "./components/TheTopTask.vue"
-  export default {
-    components: { 
-      TheMenu, 
-      TheTopTask },
-    data() {
-      const item = {
-        date: '2016-05-02',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      };
-      return {
-        tableData: Array(20).fill(item)
-=======
   <el-container class="mainContainer">
 
     <el-aside width="200px">
@@ -55,11 +9,21 @@ import TheTopTask from "./components/TheTopTask.vue"
     <el-container>
       
       <el-header height="60px">
-        <TheTopTask />
+        <TheTopTask
+          ref="TheTopTask"
+          @newTask="addTask($event)"
+        />
       </el-header>
 
       <el-main>
-        <TaskList :tasks="tasks" />
+        <TaskList
+          :tasks="tasks"
+          :areTasksLoading="areTasksLoading"       
+          v-on="{
+            restart: sendRestartTask,
+            delete: deleteTask,
+          }"
+        />
       </el-main>
 
     </el-container>
@@ -68,6 +32,9 @@ import TheTopTask from "./components/TheTopTask.vue"
 </template>
 
 <script>
+  import { v4 as uuid } from '@lukeed/uuid';
+  import * as TaskService from './services/TaskService.js';
+
   import TheMenu from './components/TheMenu.vue'
   import TheTopTask from './components/TheTopTask.vue'
   import TaskList from './components/TaskList.vue'
@@ -79,46 +46,97 @@ import TheTopTask from "./components/TheTopTask.vue"
       TaskList
     },
     data() {
-      const sample = {
-        name: 'Développement de la feature "edit" d\'un tweet',
-        startTime: '01/03/2021',
-        endTime: '00:43:13',
-      };
       return {
-        tasks: Array(20).fill(sample)
->>>>>>> a9d26aa0242399ce81f396fb9c147be2468cd14d
+        tasks: [],
+        areTasksLoading: true
       }
+    },
+    methods: {
+      async addTask ({ name, startTime }) {
+        // Ajout de la tâche en local
+        this.tasks.unshift({
+          id: uuid(),
+          name, 
+          startTime,
+          endTime: Date.now()
+        })
+
+        // Mise à jour de toutes les tâches en API
+        try {
+          await TaskService.updateAll(this.tasks)
+        } catch (e) {
+          console.error(e)
+        }
+      },  
+      sendRestartTask (taskID) {
+        // Récupération du nom de l'ancienne tâche
+        let newTaskname = null
+        this.tasks.forEach(task => {
+          if (task.id === taskID) {
+            newTaskname = task.name
+          }
+        })
+
+        // Relancement de la tâche
+        this.$refs.TheTopTask.restartTask(newTaskname)
+
+      },   
+      async deleteTask (taskID) {
+        // Récupération de l'index de la tâche
+        let taskIndex = null
+        this.tasks.forEach((task, index) => {
+          if (task.id === taskID) {
+            taskIndex = index
+          }
+        })
+
+        // Suppression de la tâche en local
+        this.tasks.splice(taskIndex, 1)        
+
+        // Mise à jour de toutes les tâches en API
+        try {
+          await TaskService.updateAll(this.tasks)
+        } catch (e) {
+          console.error(e)
+        }
+      }
+    },
+    async created () {
+      // Récupération de toutes les tâches
+      try {
+        this.tasks = await TaskService.getAll()
+      } catch (e) {
+        console.error(e)
+
+      }
+      this.areTasksLoading = false
     }
   };
 </script>
 
-<style lang="scss">
-<<<<<<< HEAD
 /* Bonne pratique: utiliser de préférence le style global dans l'App.vue (éventuellement le 'style scoped') 
 mais de préférence le 'style scoped' en component.vue  */
 
+<style lang="scss">
 body {margin:0}
-
-#app {
-=======
-body { margin: 0; }
 #app {
   position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
->>>>>>> a9d26aa0242399ce81f396fb9c147be2468cd14d
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-<<<<<<< HEAD
   
 }
 
+.mainContainer { height: 100%; }
+
 .el-aside {
+    height: 100%;
     color: #333; 
     /* color:var(--el-text-color-primary); */
     /* border-right: solid 1px var(--el-menu-border-color) */
@@ -139,29 +157,3 @@ body { margin: 0; }
 
    
 </style>
-
-
-
-
-
-=======
-}
-.mainContainer { height: 100%; }
-
-.el-aside {
-  height: 100%;
-  color: #333;
-  border-right: solid 1px #e6e6e6;
-}
-.el-header {
-  padding: 0 !important;
-  border-bottom: solid 1px #e6e6e6;
-  color: #333;
-  line-height: 60px;
-  .el-input .el-input__inner {
-    border: none !important;
-  }
-}
-
-</style>
->>>>>>> a9d26aa0242399ce81f396fb9c147be2468cd14d
