@@ -105,6 +105,7 @@
       // Récupération de toutes les tâches
       try {
         this.tasks = await TaskService.getAll()
+        // console.log(import.meta.env);
       } catch (e) {
         console.error(e)
 
@@ -114,10 +115,12 @@
   };
 </script>
 
-/* Bonne pratique: utiliser de préférence le style global dans l'App.vue (éventuellement le 'style scoped') 
-mais de préférence le 'style scoped' en component.vue  */
+  
 
 <style lang="scss">
+//  Bonne pratique: utiliser de préférence le style global dans l'App.vue (éventuellement le 'style scoped') 
+// mais de préférence le 'style scoped' en component.vue
+
 body {margin:0}
 #app {
   position: absolute;

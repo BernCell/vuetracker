@@ -7,19 +7,16 @@
     "serve": "vite preview"
   },
   "dependencies": {
-
-  "@lukeed/uuid": "^2.0.0",
-  "axios": "^0.21.1",
     "@element-plus/icons": "0.0.11",
-    "element-plus": "^1.1.0-beta.7",
-    "vue": "^3.2.6"
+    "@lukeed/uuid": "^2.0.0",
+    "axios": "^0.21.4",
+    "element-plus": "^1.1.0-beta.9",
+    "vue": "^3.2.11"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^1.6.0",
-    "@vue/compiler-sfc": "^3.2.6",
+    "@vitejs/plugin-vue": "^1.6.2",
+    "@vue/compiler-sfc": "^3.2.11",
     "sass": "^1.38.1",
-    "vite": "^2.5.1"
-
+    "vite": "^2.5.6"
   }
- 
 }
