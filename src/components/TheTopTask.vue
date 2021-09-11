@@ -35,15 +35,15 @@ export default {
         }
     },
    watch: {
-    isTaskInProgress (isInProgress) {
-        if (isInProgress) {
-            this.intervalEverySecond = setInterval(() => {
-                this.nowTime = Date.now()
-        }, 1000)
-        } else {
-            clearInterval(this.intervalEverySecond)
+        isTaskInProgress (isInProgress) {
+            if (isInProgress) {
+                this.intervalEverySecond = setInterval(() => {
+                    this.nowTime = Date.now()
+            }, 1000)
+            } else {
+                clearInterval(this.intervalEverySecond)
+            }
         }
-    }
 
     },
 
@@ -59,6 +59,7 @@ export default {
         } else {
           this.errorMsg = null
         }
+      
         // Début de la tâche
         this.isTaskInProgress = true
         this.startTime = Date.now()
@@ -89,6 +90,18 @@ export default {
           this.startTask()
         }
       },
+       restartTask (newTaskname) {
+        // Arrêt de la tâche en cours si besoin
+        if (this.isTaskInProgress) {
+          this.stopTask()
+        }
+        // Lancement de la nouvelle tâche
+        this.$nextTick(function () {
+          this.taskname = newTaskname
+          this.startTask()
+        })
+      },
+
 
       durationBetweenTimestamps (start, end) {
         let seconds = Math.floor((end / 1000) - (start / 1000))
