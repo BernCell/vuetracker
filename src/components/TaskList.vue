@@ -5,8 +5,10 @@
     stripe
     row-key="id"
     empty-text="Aucune tâche"
-    style="width: 100%">
-
+    style="width: 100%"
+    v-loading="areTaskLoading"
+    >
+    
     <el-table-column
       prop="name"
       label="Tâche">
@@ -72,6 +74,10 @@ import TaskListActions from './TaskListActions.vue'
       tasks: {
         type: Array,
         default: []
+      },
+      areTaskLoading : {
+        type: Boolean,
+        default: false
       }
     },
     methods: {

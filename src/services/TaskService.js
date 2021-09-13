@@ -11,3 +11,7 @@ const instance = axios.create({
       const res = await instance.get('/latest')
       return res.data.record
   }
+  export async function updateAll () {
+      const res = await instance.get('/latest')
+      return res.data.record
+  }

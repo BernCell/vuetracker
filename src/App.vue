@@ -17,6 +17,7 @@
     <el-main>
       <TaskList 
       :tasks="tasks"
+      :areTaskLoading= "areTaskLoading"
        v-on="{ 
            restart: sendRestartTask,
            delete: deleteTask
@@ -49,7 +50,8 @@ import TaskList from "./components/TaskList.vue"
     data() {
       
       return {        
-        tasks: []
+        tasks: [],
+        areTaskLoading: true
       }
     },
     methods: {
@@ -94,7 +96,12 @@ import TaskList from "./components/TaskList.vue"
      
     },
     async created () {
-      this.tasks = await TaskService.getAll()
+      try {
+        this.tasks = await TaskService.getAll()
+      } catch (e) {
+        console.error(e);
+      }
+      this.areTaskLoading = false
       
     },
   };
