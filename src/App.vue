@@ -33,13 +33,15 @@
 
 <script>
 import { v4 as uuid } from '@lukeed/uuid';
+import * as TaskService from './services/TaskService.js'
 
 import TheMenu from "./components/TheMenu.vue"
 import TheTopTask from "./components/TheTopTask.vue"
 import TaskList from "./components/TaskList.vue"
 
   export default {
-    components: {     
+    components: {  
+      TaskService,   
       TheMenu, 
       TheTopTask,
       TaskList
@@ -58,6 +60,11 @@ import TaskList from "./components/TaskList.vue"
           startTime,
           endTime: Date.now()
           })
+          // console.log(this.tasks[0].id);
+          // console.log(this.tasks[0].name);
+          // console.log(this.tasks[0].startTime);
+          // console.log(this.tasks[0].endTime);
+
       },
       sendRestartTask (taskID){
          // Récupération du nom de l'ancienne tâche
@@ -83,8 +90,12 @@ import TaskList from "./components/TaskList.vue"
         })
         // Suppression de la tâche en local
         this.tasks.splice(taskIndex, 1)  
-      }, 
+      }
      
+    },
+    async created () {
+      this.tasks = await TaskService.getAll()
+      
     },
   };
 </script>
