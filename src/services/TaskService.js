@@ -7,11 +7,14 @@ const instance = axios.create({
     headers: {'X-Master-Key': JSON_BIN_SECRET}
   });
 
+  //Récupération de toutes les tâches
   export async function getAll () {
       const res = await instance.get('/latest')
       return res.data.record
   }
-  export async function updateAll () {
-      const res = await instance.get('/latest')
-      return res.data.record
+
+  //Mise à jour de toutes les tâches
+  export async function updateAll (newTasks) {
+       await instance.put('/', newTasks)
+      
   }

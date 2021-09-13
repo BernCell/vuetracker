@@ -55,17 +55,22 @@ import TaskList from "./components/TaskList.vue"
       }
     },
     methods: {
-      addTask ({ name, startTime}) {
+     async addTask ({ name, startTime}) {
+        //Ajout de la tâche en local
         this.tasks.unshift({ 
           id: uuid(),
           name, 
           startTime,
           endTime: Date.now()
           })
-          // console.log(this.tasks[0].id);
-          // console.log(this.tasks[0].name);
-          // console.log(this.tasks[0].startTime);
-          // console.log(this.tasks[0].endTime);
+         
+         //Mise à jour de toutes les tâches en API
+         try {
+           await TaskService.updateAll(this.tasks)           
+         } catch (e) {
+           console.error(e);
+         }
+         
 
       },
       sendRestartTask (taskID){
@@ -81,7 +86,7 @@ import TaskList from "./components/TaskList.vue"
 
 
       },
-      deleteTask (taskID) {
+      async deleteTask (taskID) {
         
         // Récupération de l'index de la tâche
         let taskIndex = null
@@ -92,10 +97,18 @@ import TaskList from "./components/TaskList.vue"
         })
         // Suppression de la tâche en local
         this.tasks.splice(taskIndex, 1)  
+
+        //Mise à jour de toutes les tâches en API
+         try {
+           await TaskService.updateAll(this.tasks)           
+         } catch (e) {
+           console.error(e);
+         }
       }
      
     },
     async created () {
+      //Récupération de toutes les tâches
       try {
         this.tasks = await TaskService.getAll()
       } catch (e) {
