@@ -32,27 +32,28 @@
 
 
 <script>
+import { v4 as uuid } from '@lukeed/uuid';
+
 import TheMenu from "./components/TheMenu.vue"
 import TheTopTask from "./components/TheTopTask.vue"
 import TaskList from "./components/TaskList.vue"
 
   export default {
-    components: { 
+    components: {     
       TheMenu, 
       TheTopTask,
       TaskList
       },
     data() {
       
-      return {
-        taskID: 0,
+      return {        
         tasks: []
       }
     },
     methods: {
       addTask ({ name, startTime}) {
         this.tasks.unshift({ 
-          id: this.getAnID(),
+          id: uuid(),
           name, 
           startTime,
           endTime: Date.now()
@@ -83,10 +84,7 @@ import TaskList from "./components/TaskList.vue"
         // Suppression de la tâche en local
         this.tasks.splice(taskIndex, 1)  
       }, 
-      getAnID () {
-        this.taskID++
-        return this.taskID
-      }
+     
     },
   };
 </script>

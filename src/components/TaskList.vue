@@ -48,6 +48,7 @@
            restart: sendRestart,
            delete: sendDelete
        } "
+       @copyTaskname="copyToClipboard(scope.row.name) "
              
        />
       </template>
@@ -90,6 +91,9 @@ import TaskListActions from './TaskListActions.vue'
             },
              sendDelete (data) {
                 this.$emit('delete', data)
+            },
+             copyToClipboard (text) {
+                navigator.clipboard.writeText(text)
             }
      
     }
