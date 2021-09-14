@@ -58,7 +58,6 @@
         } else {
           this.errorMsg = null
         }
-
         // Début de la tâche
         this.isTaskInProgress = true
         this.startTime = Date.now()
@@ -70,13 +69,11 @@
           this.errorMsg = "Aucune tâche n'est en cours"
           return
         }
-
-        // Envoie de la nouvelle tâche à ajouter
+        // Envoi de la nouvelle tâche à ajouter
         this.$emit('newTask', {
           name: this.taskname,
           startTime: this.startTime,
         })
-
         // Fin de la tâche
         this.isTaskInProgress = false
         this.errorMsg = null
@@ -89,13 +86,12 @@
         } else {
           this.startTask()
         }
-      },      
-      restartTask (newTaskname) {
+      },
+       restartTask (newTaskname) {
         // Arrêt de la tâche en cours si besoin
         if (this.isTaskInProgress) {
           this.stopTask()
         }
-
         // Lancement de la nouvelle tâche
         this.$nextTick(function () {
           this.taskname = newTaskname

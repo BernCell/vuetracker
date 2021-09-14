@@ -1,34 +1,33 @@
 <template>
-
   <el-container class="mainContainer">
 
     <el-aside width="200px">
-      <TheMenu />
-    </el-aside>
+          <TheMenu />
+        </el-aside>
 
-    <el-container>
-      
-      <el-header height="60px">
-        <TheTopTask
-          ref="TheTopTask"
-          @newTask="addTask($event)"
-        />
-      </el-header>
+  <el-container>
 
-      <el-main>
-        <TaskList
-          :tasks="tasks"
-          :areTasksLoading="areTasksLoading"       
-          v-on="{
-            restart: sendRestartTask,
-            delete: deleteTask,
-          }"
-        />
-      </el-main>
+    <el-header height="60px" >      
+      <TheTopTask
+      ref="TheTopTask"
+       @newTask="addTask($event)"
+        />        
+    </el-header>
 
-    </el-container>
+    <el-main>
+      <TaskList 
+      :tasks="tasks"
+      :areTasksLoading= "areTasksLoading"
+       v-on="{ 
+           restart: sendRestartTask,
+           delete: deleteTask
+       } "
+       />
+    </el-main>
 
   </el-container>
+
+</el-container>
 </template>
 
 <script>
@@ -39,49 +38,53 @@
   import TheTopTask from './components/TheTopTask.vue'
   import TaskList from './components/TaskList.vue'
 
+
+
   export default {
-    components: {
-      TheMenu,
+    components: {          
+      TheMenu, 
       TheTopTask,
       TaskList
-    },
+      },
     data() {
-      return {
+      
+      return {        
         tasks: [],
         areTasksLoading: true
       }
     },
     methods: {
-      async addTask ({ name, startTime }) {
-        // Ajout de la tâche en local
-        this.tasks.unshift({
+     async addTask ({ name, startTime}) {
+        //Ajout de la tâche en local
+        this.tasks.unshift({ 
           id: uuid(),
           name, 
           startTime,
           endTime: Date.now()
-        })
-
-        // Mise à jour de toutes les tâches en API
-        try {
-          await TaskService.updateAll(this.tasks)
-        } catch (e) {
-          console.error(e)
-        }
-      },  
-      sendRestartTask (taskID) {
-        // Récupération du nom de l'ancienne tâche
+          })
+         
+         //Mise à jour de toutes les tâches en API
+         try {
+           await TaskService.updateAll(this.tasks)           
+         } catch (e) {
+           console.error(e);
+         }         
+      },
+      sendRestartTask (taskID){
+         // Récupération du nom de l'ancienne tâche
         let newTaskname = null
         this.tasks.forEach(task => {
           if (task.id === taskID) {
             newTaskname = task.name
           }
         })
-
         // Relancement de la tâche
         this.$refs.TheTopTask.restartTask(newTaskname)
 
-      },   
+
+      },
       async deleteTask (taskID) {
+        
         // Récupération de l'index de la tâche
         let taskIndex = null
         this.tasks.forEach((task, index) => {
@@ -89,28 +92,27 @@
             taskIndex = index
           }
         })
-
         // Suppression de la tâche en local
-        this.tasks.splice(taskIndex, 1)        
+        this.tasks.splice(taskIndex, 1)  
 
-        // Mise à jour de toutes les tâches en API
-        try {
-          await TaskService.updateAll(this.tasks)
-        } catch (e) {
-          console.error(e)
-        }
+        //Mise à jour de toutes les tâches en API
+         try {
+           await TaskService.updateAll(this.tasks)           
+         } catch (e) {
+           console.error(e);
+         }
       }
+     
     },
     async created () {
-      // Récupération de toutes les tâches
+      //Récupération de toutes les tâches
       try {
         this.tasks = await TaskService.getAll()
-        // console.log(import.meta.env);
       } catch (e) {
-        console.error(e)
-
+        console.error(e);
       }
       this.areTasksLoading = false
+      
     }
   };
 </script>

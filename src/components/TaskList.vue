@@ -54,17 +54,17 @@
 </template>
 
 <script>
-  import TaskListActions from './TaskListActions.vue'
+import TaskListActions from './TaskListActions.vue'
 
   export default {
-    components: {
-      TaskListActions
-    },
-    data() {
-      return {        
-        tsFormatter: Intl.DateTimeFormat('fr', { hour: '2-digit', minute: '2-digit' })
-      }
-    },
+      components : {
+          TaskListActions
+      },
+      data() {
+          return {
+               tsFormatter: Intl.DateTimeFormat('fr', { hour: '2-digit', minute: '2-digit' })
+          }
+      },
     props: {
       tasks: {
         type: Array,
